@@ -3,23 +3,19 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import AppBar from './components/AppBar';
 import SearchBox from './components/SearchBox';
-import '@fontsource/mulish/300.css';
-import '@fontsource/mulish/400.css';
-import '@fontsource/mulish/500.css';
-import '@fontsource/mulish/700.css';
 import { useState, useEffect } from 'react';
 import { GQL_BOOKS } from './settings';
 import useReadingList from './hooks/useReadingList';
 import { useQuery } from '@apollo/client';
 import BookType from './types/BookType';
 import Results from './components/Results';
-import { Add, ContactSupportRounded } from '@mui/icons-material';
+import { ContactSupportRounded, ListAlt } from '@mui/icons-material';
 import Footer from './components/Footer';
 import BeautySpots from './components/BeautySpots';
 import { PageTitle } from './components/PageTitle';
 import ReadingList from './components/ReadingList';
 import { Toaster } from 'react-hot-toast';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 /**
  * Configure an ApolloClient instance.
@@ -30,8 +26,8 @@ import { Button } from '@mui/material';
 
 function App() {
 
-    const [books, setBooks] = useState<BookType[]>([]);
-    const [results, setResults] = useState<BookType[]>([]);
+    const [books, setBooks] = useState<BookType[] | any>(null);
+    const [results, setResults] = useState<any>([]);
     const [value, setValue] = useState<string>('');
     const [mode, setMode] = useState<'READ_LIST' | 'MAIN_LIST'>('MAIN_LIST');
     const [readingList, addBook, removeBook] = useReadingList();
@@ -40,13 +36,12 @@ function App() {
     const { loading, data, refetch } = useQuery(GQL_BOOKS);
     useEffect(() => {
         setBooks(data?.books);
-    }, []);
+    }, [data]);
 
     async function searchBooks(q: string) {
-        if (q.length) {
-            const results = books.filter((book) => book.title.toLowerCase().includes(q.toLowerCase()));
+        if (q.length && books?.length) {
+            const results = books?.filter((book: any) => book.title.toLowerCase().includes(q.toLowerCase()));
             setResults(results);
-            console.log(results);
         } else {
             refetch();
         }
@@ -59,10 +54,7 @@ function App() {
 
             {/* Reading List */}
             {mode === 'READ_LIST' && (
-
                 <>
-
-
                     {/* No results to display */}
                     {(readingList.length || !value) && (
                         <div className="bg-white">
@@ -82,24 +74,12 @@ function App() {
                                 </div>
 
                                 <PageTitle title="Reading List" description="List of books you have selected for reading" />
-                                <ReadingList readingList={readingList} removeBook={removeBook} />
+                                <ReadingList readingList={readingList} removeBook={removeBook} setMode={setMode} />
                             </div>
                         </div>
                     )}
 
-                    {/* No results to display */}
-                    {(!readingList.length || !value) && (
-                        <Box className="text-center min-h-[30vh] py-20 space-y-3">
-                            <ContactSupportRounded fontSize='large' />
-                            <h3 className="text-sm font-semibold text-gray-900">
-                                Empty reading list
-                            </h3>
-                            <p className="text-sm text-gray-500">
-                                It seems you haven't added any books to your reading list
-                            </p>
-                            <Button variant="contained" color="success" size='small' startIcon={<Add />} onClick={() => setMode('MAIN_LIST')}>Add Books</Button>
-                        </Box>
-                    )}
+
 
                 </>
             )}
@@ -111,6 +91,8 @@ function App() {
                         <div className="relative isolate px-6">
                             <BeautySpots />
                             <div className="mx-auto max-w-2xl py-12">
+
+
                                 <SearchBox books={books} loading={loading} searchBooks={searchBooks} value={value} setValue={setValue} />
                             </div>
                         </div>
@@ -122,10 +104,15 @@ function App() {
 
                     {/* No results to display */}
                     {(!results.length || !value) && (
-                        <Box className="text-center min-h-[30vh] py-20">
+                        <Box className="text-center min-h-[30vh] py-20 space-y-4">
                             <ContactSupportRounded fontSize='large' />
                             <h3 className="mt-2 text-sm font-semibold text-gray-900">No books to display</h3>
-                            <p className="mt-1 text-sm text-gray-500">Please type a book title in the search box to see some results</p>
+                            <Typography color='warning' className="mt-1 text-sm text-gray-500">
+                                Please type a book title in the search box to see some results
+                            </Typography>
+                            <Button variant="contained" color="success" size='small' startIcon={<ListAlt />} onClick={() => setMode('READ_LIST')}>
+                                View Reading List
+                            </Button>
                         </Box>
                     )}
                 </>

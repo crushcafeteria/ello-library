@@ -47,8 +47,7 @@ function AppAppBar({ mode, setMode }: { mode: 'MAIN_LIST' | 'READ_LIST', setMode
                                 px: 0,
                             }}
                         >
-                            <Typography variant="h6" component="h6" sx={{
-                                color: 'black',
+                            <Typography variant="h6" component="h6" color={'primary'} sx={{
                                 fontWeight: 700,
                                 fontSize: 25,
                                 ml: 3,

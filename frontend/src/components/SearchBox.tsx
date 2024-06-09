@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -6,6 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { BOOK_PLACEHOLDER } from '../settings';
 import BookType from '../types/BookType';
 import { nanoid } from 'nanoid';
+import { Typography } from '@mui/material';
 
 export default function SearchBox({
     books, loading, searchBooks, value, setValue
@@ -18,11 +20,18 @@ export default function SearchBox({
 }) {
     const [open, setOpen] = useState(false);
 
+    useEffect(() => {
+        console.log(books);
+    }, [])
+
     return (
         <Box className='pt-24'>
-            <Autocomplete
+            <Typography color='primary' variant="h3" className="text-center pb-5">
+                Find a book
+            </Typography>
+            <Autocomplete color='secondary'
                 freeSolo
-                options={books}
+                options={books?.length ? books : []}
                 autoHighlight
                 renderInput={(params) => <TextField className=' drop-shadow-lg rounded-lg' type='search' {...params} label="Search a book by it's title" />}
                 loading={loading}
@@ -57,11 +66,14 @@ export default function SearchBox({
                                 }}
                             />
                         </Stack>
-                        {book.title}
+                        <Typography color={'secondary'}>
+                            {book.title}
+                        </Typography>
                     </Box>
-                )}
+                )
+                }
             />
-        </Box>
+        </Box >
     );
 }
 
