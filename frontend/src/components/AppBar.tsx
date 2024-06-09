@@ -5,9 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import { AddCircleRounded, AutoStories, List } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 
 
-function AppAppBar() {
+function AppAppBar({ mode, setMode }: { mode: 'MAIN_LIST' | 'READ_LIST', setMode: (mode: 'MAIN_LIST' | 'READ_LIST') => void }) {
     return (
         <div>
             <AppBar
@@ -22,12 +24,12 @@ function AppAppBar() {
                 <Container maxWidth="lg">
                     <Toolbar
                         variant="regular"
+                        className='shadow-xl rounded-lg'
                         sx={(theme) => ({
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             flexShrink: 0,
-                            borderRadius: '999px',
                             bgcolor: 'white',
                             backdropFilter: 'blur(24px)',
                             maxHeight: 40,
@@ -46,25 +48,39 @@ function AppAppBar() {
                             }}
                         >
                             <Typography variant="h6" component="h6" sx={{
-                                color: 'primary.main',
+                                color: 'black',
                                 fontWeight: 700,
                                 fontSize: 25,
                                 ml: 3,
                                 cursor: 'pointer',
                             }} onClick={() => window.location.reload()}>
-                                Book Assign
+                                <Stack direction="row" spacing={1}>
+                                    <AutoStories fontSize='large' />
+                                    <span className="hidden lg:block">Ello Library</span>
+                                </Stack>
                             </Typography>
                         </Box>
                         <Box>
                             <Button
                                 color="primary"
-                                variant="text"
-                                size="large"
+                                variant="contained"
+                                size="small"
                                 component="a"
                                 target="_blank"
-
+                                startIcon={mode === 'MAIN_LIST' ? <AddCircleRounded /> : <List />}
+                                onClick={() => {
+                                    setMode(mode === 'MAIN_LIST' ? 'READ_LIST' : 'MAIN_LIST');
+                                }}
                             >
-                                Show Reading List
+                                {mode === 'MAIN_LIST' ? (
+                                    <>
+                                        <span className="hidden lg:block">Show&nbsp;</span>Reading List
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="hidden lg:block">Find&nbsp;</span>Books
+                                    </>
+                                )}
                             </Button>
                         </Box>
                     </Toolbar>
