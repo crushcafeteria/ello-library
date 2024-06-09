@@ -1,4 +1,12 @@
-## Welcome to Book Assignment Application
+## Ello Library
+
+Built with the following packages:-
+
+- React (CRA)
+- MUI
+- TailwindCSS
+- react-hot-toast
+- nanoid
 
 ![1](/frontend/screens/1.png)
 
