@@ -4,7 +4,6 @@ import { USER_AVATAR } from "../settings";
 import BookType from "../types/BookType";
 import { useState } from "react";
 import Alert from "./Alert";
-import toast from "react-hot-toast";
 
 export default function Book({
     book,

@@ -1,13 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { BOOK_PLACEHOLDER } from '../settings';
 import BookType from '../types/BookType';
 import { nanoid } from 'nanoid';
-import Results from './Results';
 
 export default function SearchBox({
     books, loading, searchBooks, value, setValue

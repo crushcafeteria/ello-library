@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useQuery } from "@apollo/client";
 import BookType from "../types/BookType";
-import { GQL_BOOKS } from "../settings";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const STORAGE_KEY = "ELLO_READING_LIST";
